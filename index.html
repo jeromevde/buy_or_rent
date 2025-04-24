@@ -3,17 +3,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Buy or To Rent</title>
-    <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hyperformula/dist/hyperformula.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+    <script src="node_modules/handsontable/dist/handsontable.full.min.js"></script>
+    <script src="node_modules/hyperformula/dist/hyperformula.full.min.js"></script>
+    <script src="node_modules/xlsx/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="node_modules/handsontable/dist/handsontable.full.min.css">
 </head>
 <body>
     <div id="example-basic-multi-sheet-1"></div>
     <button id="download-excel">Download Excel</button>
 
     <script>
-        const excelFilePath = 'Stock_versus_realestate.xlsx'; // Path to your Excel file
+        const excelFilePath = '5y_simulation.xlsx'; // Path to your Excel file
 
         // Function to read the Excel file and extract data with formulas
         async function readExcelFile(filePath) {
@@ -21,38 +21,38 @@
             const arrayBuffer = await response.arrayBuffer();
             const data = new Uint8Array(arrayBuffer);
             const workbook = XLSX.read(data, { type: 'array' });
-            console.log(workbook)
-        const sheetNames = workbook.SheetNames;
-        const sheetsData = sheetNames.map(sheetName => {
-            const worksheet = workbook.Sheets[sheetName];
-            const range = XLSX.utils.decode_range(worksheet['!ref']);
-            const formulaData = [];
+            console.log(workbook);
+            const sheetNames = workbook.SheetNames;
+            const sheetsData = sheetNames.map(sheetName => {
+                const worksheet = workbook.Sheets[sheetName];
+                const range = XLSX.utils.decode_range(worksheet['!ref']);
+                const formulaData = [];
 
-            // Adjust the range to start at A1
-            const adjustedRange = {
-                s: { r: 0, c: 0 },
-                e: range.e
-            };
+                // Adjust the range to start at A1
+                const adjustedRange = {
+                    s: { r: 0, c: 0 },
+                    e: range.e
+                };
 
-            for (let R = adjustedRange.s.r; R <= adjustedRange.e.r; ++R) {
-                const row = [];
-                for (let C = adjustedRange.s.c; C <= adjustedRange.e.c; ++C) {
-                    const cellAddress = { c: C, r: R };
-                    const cellRef = XLSX.utils.encode_cell(cellAddress);
-                    const cell = worksheet[cellRef];
-                    if (cell && cell.f) {
-                        row.push('=' + cell.f); // Prepend '=' to the formula
-                    } else if (cell) {
-                        row.push(cell.v || ''); // Ensure empty cells are included
-                    } else {
-                        row.push('');
+                for (let R = adjustedRange.s.r; R <= adjustedRange.e.r; ++R) {
+                    const row = [];
+                    for (let C = adjustedRange.s.c; C <= adjustedRange.e.c; ++C) {
+                        const cellAddress = { c: C, r: R };
+                        const cellRef = XLSX.utils.encode_cell(cellAddress);
+                        const cell = worksheet[cellRef];
+                        if (cell && cell.f) {
+                            row.push('=' + cell.f); // Prepend '=' to the formula
+                        } else if (cell) {
+                            row.push(cell.v || ''); // Ensure empty cells are included
+                        } else {
+                            row.push('');
+                        }
                     }
+                    formulaData.push(row);
                 }
-                formulaData.push(row);
-            }
 
-            return formulaData;
-        });
+                return formulaData;
+            });
             return sheetsData;
         }
 

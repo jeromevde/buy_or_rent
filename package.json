@@ -1,0 +1,17 @@
+{
+  "name": "buy_or_rent",
+  "version": "1.0.0",
+  "description": "A project to compare buying vs renting using Handsontable and Excel integration.",
+  "scripts": {
+    "build": "parcel build index.html --dist-dir dist && cp simulation.xlsx dist/",
+    "start": "parcel index.html --open"
+  },
+  "dependencies": {
+    "handsontable": "^12.0.0",
+    "hyperformula": "^1.0.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "parcel": "^2.0.0"
+  }
+}
