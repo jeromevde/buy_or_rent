@@ -1,4 +1,4 @@
-name: Deploy Website
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -16,14 +16,13 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 16
+        node-version: '16'
 
     - name: Install dependencies
       run: npm install
 
-    - name: Build the project
+    - name: Build project
       run: npm run build
-
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
