@@ -7,11 +7,11 @@
    ```
 
 ### How to Run
-1. Start the website using a lightweight HTTP server:
+1. Start the website using `live-server` with a mount point:
    ```bash
-   npx http-server -c-1 --proxy http://localhost:8080/ /buy_or_rent
+   npx live-server --mount=/buy_or_rent:.
    ```
-2. Open your browser and navigate to `http://localhost:8080/buy_or_rent`.
+2. Open your browser and navigate to `http://127.0.0.1:8080/buy_or_rent`.
 
 ### How to Build
 1. Bundle the project for deployment:
@@ -23,5 +23,5 @@
 ### How to run the dist
 
 ```
-npx http-server dist -c-1 --proxy http://localhost:8080/ /buy_or_rent
+npx live-server --mount=/buy_or_rent:dist
 ```
